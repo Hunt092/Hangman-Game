@@ -37,11 +37,11 @@ for i in range(26):
 ## Word and guessed word Vatiable:
 guessed=[]
 words=["HUNT","BUTTER","Snow","cheeze"]
-Game_word=random.choice(words)
+Game_word=random.choice(words).upper()
 
 def drawscreenword():
     onScreenWord=""
-    for i in Game_word.upper():
+    for i in Game_word:
         if i ==" ":
             onScreenWord+="  "
             continue
@@ -52,6 +52,8 @@ def drawscreenword():
     screenWord = word_Font.render(onScreenWord,1,BLACK)
     win.blit(screenWord,(WIDTH/2,HEIGHT/2))
     return onScreenWord
+
+
 #Draws everything on the screen
 def draw():
     win.fill(WHITE)
@@ -66,12 +68,19 @@ def draw():
             word=ltr_Font.render(ltr,1,BLACK)
             win.blit(word,(x-(GAP*2-RADIUS),round(y-RADIUS/2)))
 
-    pygame.display.update()
+    
     
 
 def check_collsion(x,y,mx,my):
     dis = round(( (mx-x)**2 + (my-y)**2 )**0.5 )
     return dis
+
+def ShowEndScreen(msg=str):
+    
+    win.fill(WHITE)
+    Endscreen = Endscreen_Font.render(msg,1,BLACK)
+    win.blit(Endscreen,(WIDTH/2-150,HEIGHT/2-50))
+    
 
 
 while run:
@@ -99,21 +108,14 @@ while run:
     guessedWord = drawscreenword()
     
     if "_ " not in guessedWord:
-        
         ENDSCREEN= True
-        win.fill(WHITE)
-        Endscreen = word_Font.render("You WON!!",1,BLACK)
-        win.blit(Endscreen,(WIDTH/2,HEIGHT/2))
-        pygame.time.delay(1000)
-        pygame.display.update()
-
+        ShowEndScreen("You Won!!")
+       
     if commits==6:
         ENDSCREEN= True
-        win.fill(WHITE)
-        Endscreen = word_Font.render("You LOST!!",1,BLACK)
-        win.blit(Endscreen,(WIDTH/2,HEIGHT/2))
-        pygame.time.delay(1000)
-        pygame.display.update()
+        ShowEndScreen("You Lost!!")
+    
+    pygame.display.update()
     clock.tick(60)
 pygame.quit()
 quit()
