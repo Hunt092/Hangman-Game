@@ -6,6 +6,8 @@ WIDTH, HEIGHT= 800,600
 win=pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("Hangman Game")
 clock = pygame.time.Clock()
+#### global variables
+commits=0
 run= True
 ENDSCREEN = False
 # COLOURS
@@ -48,7 +50,7 @@ def drawscreenword():
         else:
             onScreenWord+= "_ "
     screenWord = word_Font.render(onScreenWord,1,BLACK)
-    win.blit(screenWord,(WIDTH/2-width()/2,HEIGHT/2))
+    win.blit(screenWord,(WIDTH/2,HEIGHT/2))
     return onScreenWord
 #Draws everything on the screen
 def draw():
@@ -87,18 +89,31 @@ while run:
                     if RADIUS > check_collsion(x,y,mx,my):
                         guessed.append(ltr)
                         letter[3]=False
+                        if ltr not in Game_word:
+                            commits+=1
+
     if not ENDSCREEN:
         draw()
+        print(commits)
 
     guessedWord = drawscreenword()
     
     if "_ " not in guessedWord:
+        
         ENDSCREEN= True
         win.fill(WHITE)
         Endscreen = word_Font.render("You WON!!",1,BLACK)
         win.blit(Endscreen,(WIDTH/2,HEIGHT/2))
+        pygame.time.delay(1000)
         pygame.display.update()
 
+    if commits==6:
+        ENDSCREEN= True
+        win.fill(WHITE)
+        Endscreen = word_Font.render("You LOST!!",1,BLACK)
+        win.blit(Endscreen,(WIDTH/2,HEIGHT/2))
+        pygame.time.delay(1000)
+        pygame.display.update()
     clock.tick(60)
 pygame.quit()
 quit()
