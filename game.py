@@ -14,7 +14,8 @@ ENDSCREEN = False
 
 BLACK = (0,0,0)
 WHITE = (255,255,255)
-
+RED   = (255,0,0)
+GREEN = (0,255,0)
 ##FONTS
 ltr_Font =pygame.font.SysFont("comicsms",40)
 word_Font =pygame.font.SysFont("comicsms",60)
@@ -59,16 +60,39 @@ def draw():
     win.fill(WHITE)
     ## the WORD to be guessed working loop
     drawscreenword()
-
+    man=pygame.image.load('assest\MAN{}.png'.format(commits))
+    win.blit(man,(5,10))
     ## Displays the alphaebts on the scrren to select form
     for letter in letters:
         x, y, ltr, visible= letter
         if visible:
             pygame.draw.circle(win,BLACK,(x,y),RADIUS, 3)
-            word=ltr_Font.render(ltr,1,BLACK)
+            word=ltr_Font.render(ltr,20,BLACK)
             win.blit(word,(x-(GAP*2-RADIUS),round(y-RADIUS/2)))
 
-    
+# default text box and also getting its rectangle 
+def text_objects(text , font, colour):
+    textSurface = font.render(text, True , colour)
+    return textSurface , textSurface.get_rect()
+
+# Creates a Button 
+def Button(msg,x,y,w,h,ac,iac,mc,action=None):      
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
+        #print(click)
+        #print(mouse)
+
+        if x+w > mouse[0] > x and y+h > mouse[1] > y:
+            pygame.draw.rect(win, ac,(x,y,w,h))
+            if click[0]==1 and action!=None:
+                action()
+        else:
+            pygame.draw.rect(win, iac,(x,y,w,h))
+                 
+        smallText = pygame.font.SysFont("comicsansms",20,True)
+        textSurf, textRect = text_objects(msg, word_Font,mc)
+        textRect.center = ( (x+(w/2)), (y+(h/2)) )
+        win.blit(textSurf, textRect) 
     
 
 def check_collsion(x,y,mx,my):
@@ -78,9 +102,9 @@ def check_collsion(x,y,mx,my):
 def ShowEndScreen(msg=str):
     
     win.fill(WHITE)
-    Endscreen = Endscreen_Font.render(msg,1,BLACK)
+    Endscreen = Endscreen_Font.render(msg,10,BLACK)
     win.blit(Endscreen,(WIDTH/2-150,HEIGHT/2-50))
-    
+    Button("Play Again?",WIDTH//2-WIDTH//4,HEIGHT//4+HEIGHT//2,round(WIDTH*0.5),100,GREEN,RED,BLACK)
 
 
 while run:
@@ -103,7 +127,7 @@ while run:
 
     if not ENDSCREEN:
         draw()
-        print(commits)
+        #print(commits)
 
     guessedWord = drawscreenword()
     
