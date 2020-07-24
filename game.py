@@ -60,7 +60,7 @@ def draw():
     win.fill(WHITE)
     ## the WORD to be guessed working loop
     drawscreenword()
-    man=pygame.image.load('assest\MAN{}.png'.format(commits))
+    man=pygame.image.load('assets\MAN{}.png'.format(commits))
     win.blit(man,(5,10))
     ## Displays the alphaebts on the scrren to select form
     for letter in letters:
@@ -77,6 +77,7 @@ def text_objects(text , font, colour):
 
 # Creates a Button 
 def Button(msg,x,y,w,h,ac,iac,mc,action=None):      
+
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         #print(click)
