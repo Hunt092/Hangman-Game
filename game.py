@@ -19,7 +19,7 @@ GREEN = (0,255,0)
 ##FONTS
 ltr_Font =pygame.font.SysFont("comicsms",40)
 word_Font =pygame.font.SysFont("comicsms",60)
-Endscreen_Font =pygame.font.SysFont("comicsms",100)
+Endscreen_Font =pygame.font.SysFont("comicsms",150)
 ##Varibalbes
 GAP=15
 RADIUS=20
@@ -94,7 +94,24 @@ def Button(msg,x,y,w,h,ac,iac,mc,action=None):
         textSurf, textRect = text_objects(msg, word_Font,mc)
         textRect.center = ( (x+(w/2)), (y+(h/2)) )
         win.blit(textSurf, textRect) 
-    
+
+def Reset():
+    global guessed
+    global Game_word
+    global letters
+    global ENDSCREEN 
+    global commits
+    commits= 0
+    print("PRESSED")
+    guessed=[]
+    Game_word=random.choice(words).upper()
+    letters=[]
+    for i in range(26):
+        x = ((i%13)*(start_X+GAP)+GAP)+start_X
+        y = ((i//13)*(GAP*2+RADIUS*2)+ start_Y)
+        ltr= chr(A+i)
+        letters.append([x,y,ltr,True])
+    ENDSCREEN = False
 
 def check_collsion(x,y,mx,my):
     dis = round(( (mx-x)**2 + (my-y)**2 )**0.5 )
@@ -104,8 +121,9 @@ def ShowEndScreen(msg=str):
     
     win.fill(WHITE)
     Endscreen = Endscreen_Font.render(msg,10,BLACK)
-    win.blit(Endscreen,(WIDTH/2-150,HEIGHT/2-50))
-    Button("Play Again?",WIDTH//2-WIDTH//4,HEIGHT//4+HEIGHT//2,round(WIDTH*0.5),100,GREEN,RED,BLACK)
+    win.blit(Endscreen,(WIDTH//2-WIDTH//3,HEIGHT//2-HEIGHT//4))
+    
+    Button("Play Again?",WIDTH//2-WIDTH//4,350,round(WIDTH*0.5),100,GREEN,RED,BLACK,Reset)
 
 
 while run:
